@@ -6,6 +6,23 @@ import { COLORS } from '../../constants';
 import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
 
+const SIZE = {
+  "small": {
+    fontSize: 14,
+    iconSize: 16,
+    paddingLeft: 24,
+    borderWidth: 1,
+    height: 24
+  },
+  "large": {
+    fontSize: 18,
+    iconSize: 24,
+    paddingLeft: 36,
+    borderWidth: 2,
+    height: 36
+  }
+}
+
 const IconInput = ({
   label,
   icon,
@@ -13,46 +30,43 @@ const IconInput = ({
   size,
   placeholder,
 }) => {
-  const SIZE = {
-    "small": {
-      fontSize: 14,
-      iconSize: 16,
-      paddingLeft: 24
-    },
-    "large": {
-      fontSize: 18,
-      iconSize: 24,
-      paddingLeft: 36
-    }
-  }
-  return <Wrapper>
+  return <Wrapper 
+            style={{"--bottomBorderWidth":SIZE[size].borderWidth+"px solid "+COLORS.black
+            }}
+        >
           <NativeInput style={
             {
               "--width": width+"px", 
               "--fontSize": (SIZE[size].fontSize/16)+"rem",
-              "--paddingLeft":SIZE[size].paddingLeft+"px"
+              "--paddingLeft":SIZE[size].paddingLeft+"px",
+              "--bottomBorderWidth":SIZE[size].borderWidth+"px",
+              "--height": (SIZE[size].height/16)+"rem"
             }} 
             placeholder={placeholder} />
-          <IconWrapper>
+          <IconWrapper
+            style={{"--height": SIZE[size].iconSize+"px"}}
+          >
             <Icon id={icon} strokeWidth={1} size={SIZE[size].iconSize} />
           </IconWrapper>
           <VisuallyHidden>{label}</VisuallyHidden>
         </Wrapper>
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.label`
+  display: block;
   position: relative;
-  border-bottom: 1px solid ${COLORS.black};
   width: max-content;
 `;
 
 const NativeInput = styled.input`
   border: none;
   padding-left: var(--paddingLeft);
+  border-bottom: var(--bottomBorderWidth) solid ${COLORS.black};
+  height: var(--height);
   width: var(--width);
   color: ${COLORS.gray700};
   font-weight: 700;
-  outline-offset: 4px;
+  outline-offset: 2px;
   font-size: var(--fontSize);
   &:hover{
     color: ${COLORS.black};
@@ -66,9 +80,9 @@ const NativeInput = styled.input`
 const IconWrapper = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
   bottom: 0;
-  margin: auto;
+  margin: auto 0;
+  height: var(--height);
   color: ${COLORS.gray700};
   ${NativeInput}:hover + & {
     color: ${COLORS.black};
